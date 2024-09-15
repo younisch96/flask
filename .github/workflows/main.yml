@@ -40,5 +40,5 @@ jobs:
           --exclude __pycache__/ \
           --exclude .env \
           --exclude .DS_Store \
-          ./ /home/paraavkx/tap1/
+          ./ /
         "
