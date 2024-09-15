@@ -24,9 +24,9 @@ jobs:
         FTP_USERNAME: ${{ secrets.TAP1_USERNAME }}  # Your FTP username stored in GitHub secrets
         FTP_PASSWORD: ${{ secrets.TAP1_FTPPASS }}  # Your FTP password stored in GitHub secrets
       run: |
-        lftp -c " \
-        open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER; \
-        set ssl:verify-certificate no; \
+        lftp -c "
+        open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
+        set ssl:verify-certificate no;
         mirror -R --verbose \
           --exclude .git/ \
           --exclude .git/* \
@@ -39,5 +39,5 @@ jobs:
           --exclude __pycache__/ \
           --exclude .env \
           --exclude .DS_Store \
-          ./ /home/paraavkx/tap1
+          ./ /home/paraavkx/tap1/
         "
