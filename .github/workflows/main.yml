@@ -1,4 +1,4 @@
-name: Deploy tap1 Application
+name: Deploy test Application
 
 on:
   workflow_dispatch:  # Manual trigger for deployment
