@@ -1,0 +1,43 @@
+name: Deploy tap1 Application
+
+on:
+  workflow_dispatch:  # Manual trigger for deployment
+
+jobs:
+  deploy:
+    name: 🚀 Deploy test
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the latest code
+    - name: 🛎️ Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Install lftp for FTP Deployment
+    - name: 🔧 Install lftp
+      run: sudo apt-get update && sudo apt-get install -y lftp
+
+    # Step 3: Deploy via FTP using lftp
+    - name: 📁 Sync files to cPanel via FTP
+      env:
+        FTP_SERVER: ftp.paratech.online  # Your FTP server address
+        FTP_USERNAME: ${{ secrets.TAP1_USERNAME }}  # Your FTP username stored in GitHub secrets
+        FTP_PASSWORD: ${{ secrets.TAP1_FTPPASS }}  # Your FTP password stored in GitHub secrets
+      run: |
+        lftp -c " \
+        open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER; \
+        set ssl:verify-certificate no; \
+        mirror -R --verbose \
+          --exclude .git/ \
+          --exclude .git/* \
+          --exclude .git*/** \
+          --exclude node_modules/ \
+          --exclude myenv_mac/ \
+          --exclude myenv/ \
+          --exclude tests/ \
+          --exclude .github/ \
+          --exclude __pycache__/ \
+          --exclude .env \
+          --exclude .DS_Store \
+          ./ /home/paraavkx/tap1
+        "
